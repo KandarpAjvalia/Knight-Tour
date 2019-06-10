@@ -1,41 +1,38 @@
-public class KnightTour {
+public class Main {
+    
     private static int[][] chessBoard = new int[8][8];
+    private static int[] horizontalMoves = new int[]{-2, -2, -1, -1, 1, 1, 2, 2};
+    private static int[] verticalMoves = new int[]{-1, 1, -2, 2, -2, 2, -1, 1};
+    
     public static void main(String[] args) {
-        //pair of moves of knight, same index in horizontalMoves and verticalMoves corresponds to x and y coordinate move
-        int[] horizontalMoves = new int[]{-2, -2, -1, -1, 1, 1, 2, 2};
-        int[] verticalMoves = new int[]{-1, 1, -2, 2, -2, 2, -1, 1};
         chessBoard[0][0] = 1;
-        knightMove(0,0, horizontalMoves, verticalMoves, 2);
+        knightMove(0, 0, 2);
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                if(chessBoard[i][j] < 10) {
-                    System.out.print(chessBoard[i][j] + "  ");
-                }
-                else {
-                    System.out.print(chessBoard[i][j] + " ");
-                }
+                String output = chessBoard[i][j] + " ";
+                output = chessBoard[i][j] < 10 ? output + " " : output;
+                System.out.print(output);
             }
             System.out.println();
         }
     }
 
-    private static int knightMove(int xPosition, int yPosition, int[] horizontalMove, int[] verticalMove, int currentMove) {
-        if(currentMove == 65) {
+    private static int knightMove(int xPosition, int yPosition, int moveNumber) {
+        if(moveNumber == 65) {
             return 1;
         }
-        int nextX;
-        int nextY;
-        for(int i = 0;i < 8; i++) {
-            nextX = xPosition + horizontalMove[i];
-            nextY = yPosition + verticalMove[i];
+        int nextX, nextY;
+        for(int i = 0; i < 8; i++) {
+            nextX = xPosition + horizontalMoves[i];
+            nextY = yPosition + verticalMoves[i];
             if(canMove(nextX, nextY)) {
-                chessBoard[nextX][nextY] = currentMove;
-                currentMove++;
-                if(knightMove(nextX, nextY, horizontalMove, verticalMove, currentMove) == 1) {
+                chessBoard[nextX][nextY] = moveNumber;
+                moveNumber++;
+                if(knightMove(nextX, nextY, moveNumber) == 1) {
                     return 1;
                 }
                 else {
-                    currentMove--;
+                    moveNumber--;
                     chessBoard[nextX][nextY] = 0;
                 }
             }
@@ -44,7 +41,6 @@ public class KnightTour {
     }
 
     private static boolean canMove(int x, int y) {
-        return (x < 8 && y < 8 && x >= 0 && y>= 0 && chessBoard[x][y] == 0);
+        return (x < 8 && y < 8 && x >= 0 && y >= 0 && chessBoard[x][y] == 0);
     }
-
 }
